@@ -1,7 +1,7 @@
 import re
 from playwright.sync_api import Page, expect
 
-
+## add employee test case 
 def test_add_employee(page: Page) -> None:
     first_name ="Mohammed"
     last_name = "Ghanem"
@@ -20,3 +20,5 @@ def test_add_employee(page: Page) -> None:
     page.get_by_role("textbox", name="Last Name").fill(last_name)
     page.get_by_role("button", name="Save").click()
     expect(page.locator('h6:has-text("Personal Details")')).to_be_visible(timeout=10000)
+
+

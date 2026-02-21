@@ -1,3 +1,4 @@
+## CI/CD
 name: e2e
 
 on:
@@ -29,3 +30,4 @@ jobs:
 
       - name: Run tests
         run: uv run pytest -q
+
