@@ -1,24 +1,32 @@
-import re
-from playwright.sync_api import Page, expect
-
-## add employee test case 
-def test_add_employee(page: Page) -> None:
-    first_name ="Mohammed"
-    last_name = "Ghanem"
-    page.goto("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login")
-    page.get_by_role("textbox", name="Username").fill("Admin")
-    page.get_by_role("textbox", name="Password").fill("admin123")
-    page.get_by_role("button", name="Login").click()
-    expect(page.locator("h6")).to_contain_text("Dashboard")
-    page.get_by_role("link", name="PIM").click()
-    expect(page.locator("h6")).to_contain_text("PIM")
-    page.get_by_role("link", name="Add Employee").click()
-    expect(page.get_by_role("heading", name="Add Employee")).to_be_visible()
-    page.get_by_role("textbox", name="First Name").click()
-    page.get_by_role("textbox", name="First Name").fill(first_name)
-    page.get_by_role("textbox", name="Last Name").click()
-    page.get_by_role("textbox", name="Last Name").fill(last_name)
-    page.get_by_role("button", name="Save").click()
-    expect(page.locator('h6:has-text("Personal Details")')).to_be_visible(timeout=10000)
+from pages.personal_details_page import PersonalDetailsPage
+from pages.pim_page import PimPage
 
 
+def test_add_employee_without_login_details(
+    pim_page: PimPage,
+    employee_data: dict[str, str],
+) -> None:
+    pim_page.open_add_employee()
+    pim_page.add_employee_without_login_details(
+        first_name=employee_data["first_name"],
+        last_name=employee_data["last_name"],
+    )
+
+    personal_details_page = PersonalDetailsPage(pim_page.page)
+    personal_details_page.should_be_loaded()
+
+
+def test_add_employee_with_login_details(
+    pim_page: PimPage,
+    employee_data: dict[str, str],
+) -> None:
+    pim_page.open_add_employee()
+    pim_page.add_employee_with_login_details(
+        first_name=employee_data["first_name"],
+        last_name=employee_data["last_name"],
+        username=employee_data["username"],
+        password=employee_data["password"],
+    )
+
+    personal_details_page = PersonalDetailsPage(pim_page.page)
+    personal_details_page.should_be_loaded()

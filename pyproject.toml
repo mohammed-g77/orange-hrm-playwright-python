@@ -1,10 +1,23 @@
 [project]
 name = "orange-hrm-playwright"
 version = "0.1.0"
-description = "Add your description here"
+description = "OrangeHRM Playwright tests using POM"
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.11"
 dependencies = [
     "playwright>=1.58.0",
+    "pytest>=9.0.0",
     "pytest-playwright>=0.7.2",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
