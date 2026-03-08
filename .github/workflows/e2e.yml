@@ -2,7 +2,7 @@ name: e2e
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
 
 jobs:
@@ -24,8 +24,11 @@ jobs:
       - name: Sync deps
         run: uv sync
 
+      - name: Run Ruff
+        run: uvx ruff check .
+
       - name: Install Playwright browsers
-        run: uv run playwright install --with-deps
+        run: uv run playwright install --with-deps chromium
 
       - name: Run tests
         run: uv run pytest -q
