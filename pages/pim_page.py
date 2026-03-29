@@ -36,8 +36,8 @@ class PimPage:
             "/ancestor::div[contains(@class,'oxd-input-group')]//input"
         )
         password_input = self.page.locator(
-            "//label[normalize-space()='Password']"
-            "/ancestor::div[contains(@class,'oxd-input-group')]//input"
+            "(//label[normalize-space()='Password']"
+            "/ancestor::div[contains(@class,'oxd-input-group')]//input)[1]"
         )
         confirm_password_input = self.page.locator(
             "//label[normalize-space()='Confirm Password']"
@@ -52,8 +52,20 @@ class PimPage:
         password_input.fill(password)
         confirm_password_input.fill(password)
 
-        self.page.get_by_role("radio", name="Enabled").check()
+        print("Username entered:", username_input.input_value())
+        print("Password entered:", password_input.input_value())
+        print("Confirm password entered:", confirm_password_input.input_value())
+
+        self.page.wait_for_timeout(1500)
         self.page.get_by_role("button", name="Save").click()
+        self.page.wait_for_timeout(1500)
+
+        print("Current URL:", self.page.url)
+
+        errors = self.page.locator("span.oxd-input-field-error-message")
+        print("Validation errors count:", errors.count())
+        for i in range(errors.count()):
+            print("Validation error:", errors.nth(i).inner_text())
 
     def _fill_employee_name(self, first_name: str, last_name: str) -> None:
         self.page.get_by_role("textbox", name="First Name").fill(first_name)
