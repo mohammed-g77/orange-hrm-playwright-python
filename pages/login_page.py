@@ -14,4 +14,5 @@ class LoginPage:
         self.page.get_by_role("textbox", name="Username").fill(username)
         self.page.get_by_role("textbox", name="Password").fill(password)
         self.page.get_by_role("button", name="Login").click()
-        expect(self.page.get_by_role("heading", name="Dashboard")).to_be_visible()
+        self.page.wait_for_url("**/dashboard/index", timeout=5000)
+        expect(self.page.get_by_role("heading", name="Dashboard")).to_be_visible(timeout=5000)
